@@ -1,11 +1,12 @@
 import './App.css'
 import Layout from "./Components/Layout/Layout";
-import Auth from "./Components/Auth/Auth";
+import Wallet from './Components/Web3/Wallet';
 
 function App() {
+
   return (
     <>
-    <Layout/>
+    <Wallet />
     </>
   )
 }
