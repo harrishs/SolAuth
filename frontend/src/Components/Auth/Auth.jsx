@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const Auth = (props) => {
 	let [email, setEmail] = useState("");
 	let [password, setPassword] = useState("");
 	let [login, setlogin] = useState(false);
+
+	const {publicKey} = useWallet();
 
 	const handleChange = (event) => {
 		if (event.target.name === "email") {
@@ -21,7 +25,7 @@ const Auth = (props) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({email, password})
+			body: JSON.stringify({email, password, wallet: publicKey})
 		}).then(res => res.json())
 		.then(data => console.log(data));
 	};
@@ -50,7 +54,7 @@ const Auth = (props) => {
 					required
 				/>
 				<button type="submit">
-                    Login
+                   {login === false ? "Signup" : "Login"}
 				</button>
 			</form>
 		</div>

@@ -37,17 +37,18 @@ exports.login = (req, res, next) => {
 exports.signUp = (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
+	const wallet = req.body.wallet;
 	bcrypt
 		.hash(password, salt)
 		.then((hashedPw) => {
-			const user = new User({ email, password: hashedPw });
+			const user = new User({ email, password: hashedPw, wallet });
 			user
 				.save()
-				.then((result) => {
-					const token = jwt.sign({ ...loadedUser }, process.env.SECRET, {
+				.then((user) => {
+					const token = jwt.sign({ ...user }, process.env.SECRET, {
 						expiresIn: "1h",
 					});
-					res.status(201).json({ ...result, msg: "Signup Successful", token });
+					res.status(201).json({ ...user, msg: "Signup Successful", token });
 				})
 				.catch((err) => res.status(500).json({ err }));
 		})
