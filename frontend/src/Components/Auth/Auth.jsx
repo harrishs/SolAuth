@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const Auth = (props) => {
 	let [email, setEmail] = useState("");
 	let [password, setPassword] = useState("");
 	let [login, setlogin] = useState(false);
 
-	const {publicKey} = useWallet();
+	const { publicKey } = useWallet();
 
 	const handleChange = (event) => {
 		if (event.target.name === "email") {
@@ -19,20 +18,24 @@ const Auth = (props) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		let endPoint = login === false ? "http://localhost:8080/auth/signup" : "http://localhost:8080/auth/login";
-		fetch( endPoint, {
+		let endPoint =
+			login === false
+				? "http://localhost:8080/auth/signup"
+				: "http://localhost:8080/auth/login";
+		fetch(endPoint, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({email, password, wallet: publicKey})
-		}).then(res => res.json())
-		.then(data => console.log(data));
+			body: JSON.stringify({ email, password, wallet: publicKey }),
+		})
+			.then((res) => res.json())
+			.then((data) => console.log(data));
 	};
 
 	const swapAuth = () => {
 		setlogin(!login);
-	}
+	};
 
 	const loginForm = (
 		<div>
@@ -53,19 +56,21 @@ const Auth = (props) => {
 					placeholder="password"
 					required
 				/>
-				<button type="submit">
-                   {login === false ? "Signup" : "Login"}
-				</button>
+				<button type="submit">{login === false ? "Signup" : "Login"}</button>
 			</form>
 		</div>
 	);
 
 	return (
 		<>
-		{loginForm}
-		<button onClick={swapAuth}>{login === false ? "Already Have An Account? Click Here" : "Click Here To Sign Up"}</button>
+			{loginForm}
+			<button onClick={swapAuth}>
+				{login === false
+					? "Already Have An Account? Click Here"
+					: "Click Here To Sign Up"}
+			</button>
 		</>
-	)
+	);
 };
 
 export default Auth;
